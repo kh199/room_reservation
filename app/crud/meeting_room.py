@@ -39,3 +39,16 @@ async def read_all_rooms_from_db(
     all_db_rooms = await session.execute(select(MeetingRoom))
     all_db_rooms = all_db_rooms.scalars().all()
     return all_db_rooms
+
+
+async def get_meeting_room_by_id(
+        room_id: int,
+        session: AsyncSession,
+) -> Optional[MeetingRoom]:
+    db_room = await session.execute(
+        select(MeetingRoom.id).where(
+            MeetingRoom.id == room_id
+        )
+    )
+    db_room = db_room.scalars().first()
+    return db_room
